@@ -6,7 +6,15 @@ const path = require('path');
 // Set up multer for file uploads
 
 function storage(folderName){
-  const storage = multer.diskStorage({})
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/'+folderName);
+    },
+    filename: function (req, file, cb) {
+      const ext = Date.now() + '-'+Math.round(Math.random() * 1E9) + file.originalname;
+      cb(null, ext);
+    }
+  })
 
 function fileFilter (req, file, cb) {
     if(file.mimetype.startsWith('image')){

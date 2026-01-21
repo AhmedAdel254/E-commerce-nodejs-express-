@@ -31,17 +31,8 @@ exports.getUserOrders = catchAsyncErrors(async (req, res, next) => {
   res.status(200).json({ results: orders.length, orders });
 });
 
-exports.getSingleUserOrders = catchAsyncErrors(async (req, res, next) => {
-  const orders = await orderModel.findOne({ _id:req.params.id,user: req.user._id });
-  if (!orders) {
-    return next(new appError("No orders found for this user", 404));
-  }
-  res.status(200).json({ results: orders.length, orders });
-});
-
 exports.cancelOrder = catchAsyncErrors(async (req, res, next) => {
     let order = await orderModel.findOne({
-        _id:req.params.id,
         user:req.user._id
     })
     if(!order) return next(new appError("No order found for this user",404))
@@ -51,8 +42,8 @@ exports.cancelOrder = catchAsyncErrors(async (req, res, next) => {
         res.status(200).json({message:"order canceled successfuly",order})
 })
 
-// admin 
 
+// admin 
 
 exports.getAllOrders = catchAsyncErrors(async (req, res, next) => {
   let orders = await orderModel.find().populate("user", "name email");

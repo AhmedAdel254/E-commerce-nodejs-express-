@@ -91,14 +91,18 @@ Schema.pre("find", function () {
   this.populate("subCategory","name -_id");
   this.populate("brand","name -_id");
 });
+ // دي عشان لو مش هنزلها علي كللاد نيري 
+ 
+Schema.post('init', (doc)=>{
+  if(doc.imageCover&&doc.images){
+        doc.imageCover = 'http://localhost:3000/product/'+doc.imageCover
+    let img =[];
+    doc.images.forEach((element) => {
+        img.push('http://localhost:3000/product/'+element)
+        doc.images=img
+    })
+  }
 
-// Schema.post('init', (doc)=>{
-//     doc.imageCover = 'http://localhost:3000/product/'+doc.imageCover
-//     let img =[];
-//     doc.images.forEach((element) => {
-//         img.push('http://localhost:3000/product/'+element)
-//         doc.images=img
-//     })
-// })
+})
 
 module.exports = mongoose.model("product", Schema);

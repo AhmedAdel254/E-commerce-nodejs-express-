@@ -97,7 +97,9 @@ module.exports.updateOne = (model,options = {}) => {
       req.body.slug = slugify(req.body.name);
     }
     if(req.file){
-      req.body.image = req.file.filename
+     const result = await cloudinary.uploader.upload(req.file.path, {folder:`ecommerce/${options.folderName}`  || "default"});
+      // خزّن اللينك في body
+      req.body.image = result.secure_url; 
     }
     if(options.review){
       let { id } = req.params 
@@ -142,9 +144,8 @@ module.exports.deletOne = (model,options = {}) => {
 
 module.exports.changePassword = (model) => {
   return catchAsyncErrors(async (req, res, next) => {
-    let { id } = req.params;
     req.body.changePasswordAt=Date.now()
-    let document = await model.findByIdAndUpdate(id,req.body,{new:true});
+    let document = await model.findByIdAndUpdate(req.user._id,req.body,{new:true});
     !document && next(new appError("No document for this id", 404));
     document && res.status(200).json(document);
     res.status(200).json(document)

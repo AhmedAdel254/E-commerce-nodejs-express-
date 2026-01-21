@@ -6,7 +6,7 @@ module.exports.addWishList = () => {
   return catchAsyncErrors(async (req, res, next) => {
     let {wishList} = await userModel.findByIdAndUpdate(
       req.user._id,
-      { $addToSet: { wishList: req.body.product} },
+      { $addToSet: { wishList: req.body.product} }, // لو موجودة مش هيضيف تاني
       { new: true }
     );
     !wishList && next(new appError("No document for this id", 404)); // badal ma a3ml if (el 2 w7ed)

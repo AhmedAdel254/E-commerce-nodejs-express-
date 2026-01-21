@@ -23,8 +23,6 @@ if(process.env.MODE_ENV==='development'){
     app.use(morgan('dev'));
 }
 
-
-
 // handle unhandled routes
 app.use((req, res, next) => {
 next(new appError(`Can't find this route: ${req.originalUrl}`,404)) // 3shan yro7 ll global error handling middleware

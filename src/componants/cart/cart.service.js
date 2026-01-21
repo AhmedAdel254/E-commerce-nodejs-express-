@@ -16,6 +16,7 @@ function totalPrice(cart){
             cart.totalAfterDiscount = (cart.totalPrice - ((cart.totalPrice * cart.discount) / 100)).toFixed(2);
             }
 }
+
 module.exports.addToCart = () => {
     return catchAsyncErrors(async (req, res, next) => {
 

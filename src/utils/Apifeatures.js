@@ -25,6 +25,7 @@ class Apifeatures {
         this.mongooseQuery.find(filter)
         return this;
     }
+    
     sort(){
         if (this.queryString.sort) {
         let sortedBy = this.queryString.sort.replace(",", " ");
